@@ -1,8 +1,15 @@
 # GalaxyOPC
 
-`GalaxyOPC` 是 `opc-server` 的独立开源仓库，提供一套基于 Node.js + TypeScript 的经营协作服务端，覆盖账号认证、公司管理、AI 对话、工作流、白标租户、IoT 空间、导出与任务调度等能力。
+`GalaxyOPC` 是 `opc-server` 的独立开源仓库。
 
-当前仓库按 `Apache License 2.0` 开源，适合二次开发、私有部署、教学研究和功能扩展。
+它提供一套基于 Node.js + TypeScript 的经营协作服务端，覆盖账号认证、公司管理、AI 对话、工作流、白标租户、IoT 空间、导出与任务调度等能力，适合二次开发、私有部署和功能扩展。
+
+## 开源信息
+
+- License: `Apache-2.0`
+- Runtime: `Node.js + TypeScript`
+- Database: `PostgreSQL / SQLite`
+- Repository: `https://github.com/P3ngSaM/galaxyopc`
 
 ## 主要能力
 
@@ -26,6 +33,13 @@ research/     示例商机地图数据
 public/       公共静态资源
 uploads/      运行时上传目录占位
 ```
+
+## 适用场景
+
+- 单机体验或本地部署
+- 小团队经营协作后台
+- 需要白标化的私有运营后台
+- 需要把 AI 对话、业务数据和自动化流程放在同一服务中的项目
 
 ## 快速开始
 
@@ -93,6 +107,14 @@ npm run test:e2e
 ```
 
 仓库还保留了 `scripts/` 下的数据采集与机会地图生成脚本，但公开仓库中仅附带最小示例数据，不包含原业务数据、客户数据、日志、证书和本地数据库文件。
+
+## 发布文档
+
+- [CHANGELOG.md](CHANGELOG.md)
+- [docs/quick-start.md](docs/quick-start.md)
+- [docs/configuration.md](docs/configuration.md)
+- [docs/architecture.md](docs/architecture.md)
+- [docs/deployment.md](docs/deployment.md)
 
 ## 配置说明
 
