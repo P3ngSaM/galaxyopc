@@ -1,0 +1,80 @@
+{
+  "name": "opc-server",
+  "version": "0.2.0",
+  "description": "星环 OPC Server - 一人公司经营与自动化协作平台服务端",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/P3ngSaM/galaxyopc.git"
+  },
+  "homepage": "https://github.com/P3ngSaM/galaxyopc",
+  "bugs": {
+    "url": "https://github.com/P3ngSaM/galaxyopc/issues"
+  },
+  "keywords": [
+    "opc",
+    "nodejs",
+    "typescript",
+    "postgresql",
+    "sqlite",
+    "ai-agent",
+    "automation",
+    "crm",
+    "workflow"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch server.ts",
+    "build": "tsc",
+    "start": "tsx server.ts",
+    "db:migrate": "tsx server.ts --migrate-only",
+    "intel:dazhu": "node ./scripts/collect-county-intel.mjs --preset dazhu",
+    "targets:province": "node ./scripts/build-province-targets.mjs",
+    "intel:province": "node ./scripts/collect-province-intel.mjs",
+    "aggregate:province": "node ./scripts/aggregate-province-intel.mjs",
+    "map:province": "node ./scripts/build-province-opportunity-map.mjs",
+    "intel:import-db": "tsx ./scripts/import-intel-to-db.ts",
+    "targets:sichuan": "node ./scripts/build-sichuan-targets.mjs",
+    "intel:sichuan": "node ./scripts/collect-sichuan-intel.mjs",
+    "aggregate:sichuan": "node ./scripts/aggregate-sichuan-intel.mjs",
+    "map:sichuan": "node ./scripts/build-sichuan-opportunity-map.mjs",
+    "targets:yunnan": "node ./scripts/build-province-targets.mjs --province 云南省 --output research/yunnan-targets.json",
+    "intel:yunnan": "node ./scripts/collect-province-intel.mjs --targets research/yunnan-targets.json --output-dir research/yunnan",
+    "map:dazhu": "node ./scripts/build-dazhu-opportunity-map.mjs",
+    "test:smoke": "tsx --test tests/**/*.test.ts",
+    "test:ci": "npm run build && npm run test:smoke",
+    "test:e2e": "playwright test",
+    "db:migrate:sqlite-business": "tsx ./scripts/migrate-sqlite-business-to-pg.ts"
+  },
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.59.0",
+    "bcryptjs": "^3.0.2",
+    "better-sqlite3": "^12.8.0",
+    "docx": "^9.6.0",
+    "dotenv": "^16.6.1",
+    "imapflow": "^1.2.13",
+    "jsonwebtoken": "^9.0.2",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^8.0.2",
+    "pg": "^8.20.0",
+    "qrcode": "^1.5.4",
+    "uuid": "^11.1.0",
+    "wechatpay-node-v3": "^2.2.1"
+  },
+  "devDependencies": {
+    "@midscene/web": "^1.5.2",
+    "@playwright/test": "^1.58.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^20.19.35",
+    "@types/node-cron": "^3.0.11",
+    "@types/nodemailer": "^7.0.11",
+    "@types/pg": "^8.18.0",
+    "@types/qrcode": "^1.5.6",
+    "@types/uuid": "^10.0.0",
+    "playwright": "^1.58.2",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "province": "云南省",
+  "city": "昭通市",
+  "county": "彝良县",
+  "policyUrls": [
+    {
+      "url": "https://www.cnyl.gov.cn/",
+      "fallbackQuery": "site:cnyl.gov.cn 彝良 政策文件"
+    }
+  ],
+  "industryUrls": [],
+  "biddingUrls": [],
+  "companyKeywords": [
+    "彝良 招商引资",
+    "彝良 天麻",
+    "彝良 重点项目",
+    "彝良 乡村振兴",
+    "彝良 文旅"
+  ],
+  "searchQueries": [
+    "site:cnyl.gov.cn 彝良 政策文件",
+    "site:cnyl.gov.cn 彝良 公示公告",
+    "site:cnyl.gov.cn 彝良 政府工作报告",
+    "site:cnyl.gov.cn 彝良 重点项目",
+    "site:ggzy.yn.gov.cn 彝良 招标公告",
+    "site:ggzy.yn.gov.cn 彝良 中标公告",
+    "site:invest.yn.gov.cn 彝良 项目"
+  ],
+  "searchDocumentQueries": [
+    {
+      "sourceType": "policy",
+      "query": "site:cnyl.gov.cn 彝良 政策文件"
+    },
+    {
+      "sourceType": "policy",
+      "query": "site:cnyl.gov.cn 彝良 公示公告"
+    },
+    {
+      "sourceType": "policy",
+      "query": "site:cnyl.gov.cn 彝良 政府工作报告"
+    },
+    {
+      "sourceType": "industry",
+      "query": "site:cnyl.gov.cn 彝良 重点项目"
+    },
+    {
+      "sourceType": "industry",
+      "query": "site:invest.yn.gov.cn 彝良 项目"
+    },
+    {
+      "sourceType": "bidding",
+      "query": "site:ggzy.yn.gov.cn 彝良 招标公告"
+    }
+  ]
+}

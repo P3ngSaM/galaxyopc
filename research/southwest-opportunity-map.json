@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "name": "sample-southwest-map",
+    "generated_at": "2026-04-17T00:00:00.000Z"
+  },
+  "industries": [],
+  "opportunities": [
+    {
+      "id": "demo-sw-001",
+      "title": "示例机会点",
+      "province": "四川省",
+      "city": "成都市",
+      "county": "高新区",
+      "address": "四川省成都市高新区",
+      "longitude": 104.0668,
+      "latitude": 30.5728
+    }
+  ]
+}

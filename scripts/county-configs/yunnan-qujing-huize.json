@@ -1,0 +1,81 @@
+{
+  "province": "云南省",
+  "city": "曲靖市",
+  "county": "会泽县",
+  "policyUrls": [
+    {
+      "url": "https://huize.gov.cn/",
+      "fallbackQuery": "site:huize.gov.cn 会泽 政策文件"
+    },
+    {
+      "url": "https://huize.gov.cn/huize/public/special/194.html",
+      "fallbackQuery": "site:huize.gov.cn 会泽 政府工作报告"
+    },
+    {
+      "url": "https://huize.gov.cn/gov/library/files/245/5974.html",
+      "fallbackQuery": "site:huize.gov.cn 会泽 惠企政策"
+    }
+  ],
+  "industryUrls": [
+    {
+      "url": "https://invest.yn.gov.cn/xm2026a/03001.html",
+      "fallbackQuery": "site:invest.yn.gov.cn 会泽 项目"
+    },
+    {
+      "url": "https://invest.yn.gov.cn/contents/9/7709.html",
+      "fallbackQuery": "site:invest.yn.gov.cn 会泽 招商引资"
+    }
+  ],
+  "biddingUrls": [],
+  "companyKeywords": [
+    "会泽 招商引资",
+    "会泽 重点项目",
+    "会泽 磷化工",
+    "会泽 新材料",
+    "会泽 文旅康养"
+  ],
+  "searchQueries": [
+    "site:huize.gov.cn 会泽 政策文件",
+    "site:huize.gov.cn 会泽 公示公告",
+    "site:huize.gov.cn 会泽 招商引资",
+    "site:huize.gov.cn 会泽 重点项目",
+    "site:invest.yn.gov.cn 会泽 项目",
+    "site:invest.yn.gov.cn 会泽 招商引资",
+    "site:ggzy.yn.gov.cn 会泽 招标公告",
+    "site:ggzy.yn.gov.cn 会泽 中标公告"
+  ],
+  "searchDocumentQueries": [
+    {
+      "sourceType": "policy",
+      "query": "site:huize.gov.cn 会泽 政策文件"
+    },
+    {
+      "sourceType": "policy",
+      "query": "site:huize.gov.cn 会泽 政府工作报告"
+    },
+    {
+      "sourceType": "policy",
+      "query": "site:huize.gov.cn 会泽 公示公告"
+    },
+    {
+      "sourceType": "industry",
+      "query": "site:huize.gov.cn 会泽 重点项目"
+    },
+    {
+      "sourceType": "industry",
+      "query": "site:invest.yn.gov.cn 会泽 项目"
+    },
+    {
+      "sourceType": "industry",
+      "query": "site:invest.yn.gov.cn 会泽 招商引资"
+    },
+    {
+      "sourceType": "bidding",
+      "query": "site:ggzy.yn.gov.cn 会泽 招标公告"
+    },
+    {
+      "sourceType": "bidding",
+      "query": "site:ggzy.yn.gov.cn 会泽 中标公告"
+    }
+  ]
+}
