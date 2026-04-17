@@ -1,5 +1,9 @@
 # GalaxyOPC
 
+<p align="center">
+  <img src="src/img/logo.png" alt="GalaxyOPC Logo" width="160" />
+</p>
+
 `GalaxyOPC` 是 `opc-server` 的独立开源仓库。
 
 它提供一套基于 Node.js + TypeScript 的经营协作服务端，覆盖账号认证、公司管理、AI 对话、工作流、白标租户、IoT 空间、导出与任务调度等能力，适合二次开发、私有部署和功能扩展。
