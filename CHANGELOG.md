@@ -10,6 +10,8 @@ All notable changes to this open-source repository will be documented in this fi
 - Apache 2.0 license and notice files
 - Public-facing GitHub `README.md`
 - Deployment, configuration, architecture and quick-start docs
+- Open-source roadmap for local desktop packaging, onboarding wizard and collaboration channels
+- Local Edition product notes for Windows / macOS packaging and simplified configuration
 - Minimal sample `research` JSON data for demo startup
 - Clean repository layout for standalone publishing
 

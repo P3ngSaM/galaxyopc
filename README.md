@@ -155,10 +155,24 @@ npm run test:e2e
 ## 发布文档
 
 - [CHANGELOG.md](CHANGELOG.md)
+- [docs/roadmap.md](docs/roadmap.md)
+- [docs/local-edition.md](docs/local-edition.md)
 - [docs/quick-start.md](docs/quick-start.md)
 - [docs/configuration.md](docs/configuration.md)
 - [docs/architecture.md](docs/architecture.md)
 - [docs/deployment.md](docs/deployment.md)
+
+## 迭代方向
+
+`GalaxyOPC` 的 GitHub 开源更多承担“公开名片、技术背书、生态协作”的角色。真正面向圈内传播和非技术用户使用时，重点会转向更低门槛的本地运行版本：
+
+- 封装 Windows / macOS 本地安装包，减少命令行依赖
+- 提供首次启动配置向导，参考 Enclaw 一类工具的低门槛体验
+- 预设可试用的星环算力通道，让用户先跑起来，再决定是否自配模型
+- 打通飞书、企业微信、钉钉等协作通道，让 AI 从“聊天入口”进入真实工作流
+- 将城市管理、物联网管理升级为独立横向空间页面，与 AI 对话入口、管理后台形成清晰分工
+
+详细计划见 [docs/roadmap.md](docs/roadmap.md)。
 
 ## 配置说明
 
