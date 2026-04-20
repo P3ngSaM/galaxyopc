@@ -1965,7 +1965,7 @@ function navigate(hash) { location.hash = '#' + hash; }
 
 // ─── 路由 (1:1 复刻桌面端菜单) ──────────────────────────────────────
 
-const ADMIN_PAGES = ['dashboard','companies','company','canvas','compass','channels','tools','closure','skills','scheduler','calendar','inbox','guide','plan','settings','model-config','users','cities','opportunity-map','profile','memory','friends','agent-rooms','agent-room','admin-stats','admin-orders','admin-plan-config','feedback','invite','local-tasks','local-audit','workflows','focus','aivideo','tenant-builder','iot-platform','changelog-admin'];
+const ADMIN_PAGES = ['dashboard','companies','company','canvas','compass','channels','tools','closure','skills','scheduler','calendar','inbox','guide','plan','settings','model-config','local-setup','users','cities','opportunity-map','profile','memory','friends','agent-rooms','agent-room','admin-stats','admin-orders','admin-plan-config','feedback','invite','local-tasks','local-audit','workflows','focus','aivideo','tenant-builder','iot-platform','changelog-admin'];
 
 function getRoute() {
   const h = location.hash.slice(1) || '';
@@ -2042,6 +2042,7 @@ async function loadView(route) {
       case 'plan': await loadPlan(); break;
       case 'settings': if (!window.LOCAL_MODE) { navigate('plan'); return; } await loadSettings(); break;
       case 'model-config': if (!window.LOCAL_MODE) { navigate('plan'); return; } await loadModelConfig(); break;
+      case 'local-setup': if (!window.LOCAL_MODE) { navigate('dashboard'); return; } await loadLocalSetup(); break;
       case 'profile': await loadProfile(); break;
       case 'memory': await loadMemoryCenter(); break;
       case 'friends': await loadCompanies(); break;
@@ -2664,7 +2665,7 @@ function renderSidebar(route) {
       item('guide','guide','${icon('guide')}','使用手册') +
       item('closure','closure','${icon('closure')}','资金闭环') +
       (!window.__TENANT__ ? item('tenant-builder','tenant-builder','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 8h4"/><path d="M7 11h2"/></svg>','专属 OPC') : '') +
-      (window.__TENANT__ ? item('iot-platform','iot-platform','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><circle cx="12" cy="12" r="9" stroke-dasharray="4 2"/></svg>','物联网平台') : '') +
+      item('iot-platform','iot-platform','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><circle cx="12" cy="12" r="9" stroke-dasharray="4 2"/></svg>','物联网平台') +
       item('calendar','calendar','<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>','任务日程') +
       (window.LOCAL_MODE ? '<div class="sidebar-label">智能自动化</div>' +
         item('workflows','workflows','<svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>','自动化') +
@@ -2673,7 +2674,8 @@ function renderSidebar(route) {
         '' : '') +
       '<div class="sidebar-label">账户</div>' +
       (window.LOCAL_MODE
-        ? item('model-config','model-config','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2m-3.5-8.5-1.4 1.4m-9.2 9.2-1.4 1.4m12.6 0-1.4-1.4M5.9 5.9 4.5 4.5"/></svg>','模型配置') +
+        ? item('local-setup','local-setup','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.2 2.2 6.8L12 15.8 5.3 20l2.2-6.8L2 9h7l3-7z"/></svg>','启动向导') +
+          item('model-config','model-config','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2m-3.5-8.5-1.4 1.4m-9.2 9.2-1.4 1.4m12.6 0-1.4-1.4M5.9 5.9 4.5 4.5"/></svg>','模型配置') +
           item('settings','settings','<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>','个人配置')
         : '') +
       item('plan','plan','${icon('plan')}','套餐与用量') +
@@ -10092,14 +10094,28 @@ function copyAllTest() {
 }
 
 var AI_PROVIDERS = [
-  { id: 'openai', name: 'OpenAI', baseUrl: 'https://api.openai.com/v1', models: ['gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-3.5-turbo'] },
-  { id: 'qwen', name: '\u901A\u4E49\u5343\u95EE', baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1', models: ['qwen3.6-plus', 'qwen3.5-plus', 'qwen-max', 'qwen-plus', 'qwen-turbo', 'qwen-long'] },
-  { id: 'qwen-coding', name: '\u901A\u4E49\u5343\u95EE Coding', baseUrl: 'https://coding.dashscope.aliyuncs.com/v1', models: ['qwen3.5-plus', 'qwen3-coder-plus'] },
-  { id: 'deepseek', name: 'DeepSeek', baseUrl: 'https://api.deepseek.com/v1', models: ['deepseek-chat', 'deepseek-coder', 'deepseek-reasoner'] },
-  { id: 'zhipu', name: '\u667A\u8C31 GLM', baseUrl: 'https://open.bigmodel.cn/api/paas/v4', models: ['glm-4-plus', 'glm-4', 'glm-4-flash'] },
-  { id: 'moonshot', name: 'Moonshot', baseUrl: 'https://api.moonshot.cn/v1', models: ['moonshot-v1-128k', 'moonshot-v1-32k', 'moonshot-v1-8k'] },
-  { id: 'custom', name: '\u81EA\u5B9A\u4E49', baseUrl: '', models: [] }
+  { id: 'openai', name: 'OpenAI', baseUrl: 'https://api.openai.com/v1', keyUrl: 'https://platform.openai.com/api-keys', docsUrl: 'https://platform.openai.com/docs', models: ['gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-3.5-turbo'] },
+  { id: 'qwen', name: '\u901A\u4E49\u5343\u95EE', baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1', keyUrl: 'https://bailian.console.aliyun.com/?apiKey=1#/api-key', docsUrl: 'https://help.aliyun.com/zh/model-studio/', models: ['qwen3.6-plus', 'qwen3.5-plus', 'qwen-max', 'qwen-plus', 'qwen-turbo', 'qwen-long'] },
+  { id: 'qwen-coding', name: '\u901A\u4E49\u5343\u95EE Coding', baseUrl: 'https://coding.dashscope.aliyuncs.com/v1', keyUrl: 'https://bailian.console.aliyun.com/?apiKey=1#/api-key', docsUrl: 'https://help.aliyun.com/zh/model-studio/', models: ['qwen3.5-plus', 'qwen3-coder-plus'] },
+  { id: 'deepseek', name: 'DeepSeek', baseUrl: 'https://api.deepseek.com/v1', keyUrl: 'https://platform.deepseek.com/api_keys', docsUrl: 'https://api-docs.deepseek.com/', models: ['deepseek-chat', 'deepseek-coder', 'deepseek-reasoner'] },
+  { id: 'zhipu', name: '\u667A\u8C31 GLM', baseUrl: 'https://open.bigmodel.cn/api/paas/v4', keyUrl: 'https://open.bigmodel.cn/usercenter/apikeys', docsUrl: 'https://docs.bigmodel.cn/', models: ['glm-4-plus', 'glm-4', 'glm-4-flash'] },
+  { id: 'moonshot', name: 'Moonshot', baseUrl: 'https://api.moonshot.cn/v1', keyUrl: 'https://platform.moonshot.cn/console/api-keys', docsUrl: 'https://platform.moonshot.cn/docs', models: ['moonshot-v1-128k', 'moonshot-v1-32k', 'moonshot-v1-8k'] },
+  { id: 'minimax', name: 'MiniMax', baseUrl: 'https://api.minimax.chat/v1', keyUrl: 'https://platform.minimaxi.com/user-center/basic-information/interface-key', docsUrl: 'https://platform.minimaxi.com/document', models: ['abab6.5s-chat', 'abab6.5g-chat', 'abab6.5t-chat'] },
+  { id: 'siliconflow', name: '\u7845\u57FA\u6D41\u52A8 SiliconFlow', baseUrl: 'https://api.siliconflow.cn/v1', keyUrl: 'https://cloud.siliconflow.cn/account/ak', docsUrl: 'https://docs.siliconflow.cn/', models: ['Qwen/Qwen2.5-72B-Instruct', 'deepseek-ai/DeepSeek-V3', 'deepseek-ai/DeepSeek-R1'] },
+  { id: 'openrouter', name: 'OpenRouter', baseUrl: 'https://openrouter.ai/api/v1', keyUrl: 'https://openrouter.ai/settings/keys', docsUrl: 'https://openrouter.ai/docs', models: ['openai/gpt-4o-mini', 'anthropic/claude-3.5-sonnet', 'deepseek/deepseek-chat'] },
+  { id: 'custom', name: '\u81EA\u5B9A\u4E49', baseUrl: '', keyUrl: '', docsUrl: '', models: [] }
 ];
+
+function renderProviderLinks(prov) {
+  if (!prov) return '';
+  var links = [];
+  if (prov.keyUrl) links.push('<a href="' + prov.keyUrl + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700;text-decoration:none;">获取 API Key</a>');
+  if (prov.docsUrl) links.push('<a href="' + prov.docsUrl + '" target="_blank" rel="noopener" style="color:var(--tx2);text-decoration:none;">官方文档</a>');
+  if (!links.length) return '<div style="font-size:12px;color:var(--tx3);margin-top:8px;">自定义兼容 OpenAI Chat Completions 的服务地址和模型名称。</div>';
+  return '<div id="ai-provider-links-inner" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px;padding:10px 12px;border:1px solid rgba(249,115,22,0.16);border-radius:10px;background:rgba(249,115,22,0.06);font-size:12px;">' +
+    '<span style="color:var(--tx3);">没有密钥？</span>' + links.join('<span style="color:var(--tx3);">|</span>') +
+  '</div>';
+}
 
 // ─── Skills ──────────────────────────────────────────────────────────
 
@@ -11218,11 +11234,13 @@ async function loadSettings() {
 
   if (window.LOCAL_MODE) {
     mc.innerHTML =
-      '<div class="page-inner"><div class="page-header"><h1>个人配置</h1><p>配置搜索、邮箱和飞书，也可通过 AI 对话完成配置</p></div>' +
+      '<div class="page-inner"><div class="page-header"><h1>个人配置</h1><p>配置搜索、邮箱、飞书、企业微信和钉钉，也可通过 AI 对话完成配置</p></div>' +
       '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;" id="settings-tabs">' +
         '<button class="btn btn-sm settings-tab active" onclick="switchSettingsTab(&quot;search&quot;)">搜索服务</button>' +
         '<button class="btn btn-sm settings-tab" onclick="switchSettingsTab(&quot;email&quot;)">邮箱</button>' +
         '<button class="btn btn-sm settings-tab" onclick="switchSettingsTab(&quot;feishu&quot;)">飞书</button>' +
+        '<button class="btn btn-sm settings-tab" onclick="switchSettingsTab(&quot;wecom&quot;)">企业微信</button>' +
+        '<button class="btn btn-sm settings-tab" onclick="switchSettingsTab(&quot;dingtalk&quot;)">钉钉</button>' +
       '</div>' +
       '<div id="settings-panel"></div></div>';
     switchSettingsTab('search');
@@ -11279,6 +11297,7 @@ var models = [], userModelId = 'qwen3.6-plus', userPlan = 'free';
             '<option value="">请选择...</option>' +
             AI_PROVIDERS.map(function(p) { return '<option value="' + p.id + '">' + p.name + '</option>'; }).join('') +
           '</select>' +
+          '<div id="ai-provider-links"></div>' +
         '</div>' +
         '<div>' +
           '<label style="font-size:12px;font-weight:600;color:var(--tx2);display:block;margin-bottom:6px;">API Key</label>' +
@@ -11379,6 +11398,58 @@ var XINGHUAN_PLANS = [
   },
 ];
 
+async function loadLocalSetup() {
+  var mc = document.getElementById('mc');
+  if (!mc) return;
+
+  var aiOk = false, searchOk = false, feishuOk = false;
+  try {
+    var aiCfg = (await api('/ai-config')).config || {};
+    aiOk = !!aiCfg.ai_api_key_masked || !!aiCfg.ai_api_key || !!aiCfg.ai_model;
+  } catch(e) {}
+  try {
+    var searchCfg = (await api('/search-config')).config || {};
+    searchOk = !!searchCfg.uapi_key_masked || !!searchCfg.uapi_key || !!searchCfg.uapi_url;
+  } catch(e) {}
+  try {
+    var fs = await api('/local/feishu/status');
+    feishuOk = !!(fs && fs.running);
+  } catch(e) {}
+
+  function badge(ok, readyText, todoText) {
+    return '<span style="font-size:12px;padding:4px 10px;border-radius:999px;background:' + (ok ? 'rgba(34,197,94,0.12)' : 'rgba(249,115,22,0.12)') + ';color:' + (ok ? '#22c55e' : '#F97316') + ';font-weight:700;">' + (ok ? readyText : todoText) + '</span>';
+  }
+  function card(title, desc, status, btnText, action, extra) {
+    return '<div class="card" style="display:flex;flex-direction:column;gap:14px;min-height:210px;">' +
+      '<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;">' +
+        '<h3 style="font-size:17px;margin:0;font-weight:800;">' + title + '</h3>' + status +
+      '</div>' +
+      '<p style="font-size:13px;color:var(--tx2);line-height:1.75;margin:0;flex:1;">' + desc + '</p>' +
+      (extra || '') +
+      '<button class="btn btn-primary" onclick="' + action + '" style="align-self:flex-start;">' + btnText + '</button>' +
+    '</div>';
+  }
+
+  mc.innerHTML =
+    '<div class="page-inner">' +
+      '<div class="page-header">' +
+        '<h1>本地启动向导</h1>' +
+        '<p>给非技术用户准备的最短配置路径：先能对话，再接通办公通道，最后管理城市空间和物联网。</p>' +
+      '</div>' +
+      '<div style="padding:22px;border-radius:18px;background:linear-gradient(135deg,rgba(249,115,22,0.16),rgba(14,165,233,0.08));border:1px solid rgba(249,115,22,0.18);margin-bottom:18px;">' +
+        '<div style="font-size:12px;color:var(--accent);font-weight:800;letter-spacing:.08em;margin-bottom:8px;">LOCAL FIRST</div>' +
+        '<h2 style="font-size:24px;margin:0 0 8px;font-weight:900;">开源版先让系统跑起来，再逐步连接真实业务。</h2>' +
+        '<p style="margin:0;color:var(--tx2);font-size:14px;line-height:1.8;">默认使用本地数据与自配模型；如果用户暂时没有密钥，可以先进入模型配置页选择星环试用算力，降低首次体验门槛。</p>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">' +
+        card('1. 模型与算力', '配置通义千问、DeepSeek、智谱、Kimi、OpenAI 或兼容服务。API Key 输入区会直接给出各厂商官网入口，减少用户自己搜索的成本。', badge(aiOk, '已配置', '待配置'), '去配置模型', 'navigate(&quot;model-config&quot;)') +
+        card('2. 办公通道', '飞书已支持本地长连接；企业微信和钉钉先提供 CorpID、Secret、AgentID、Webhook 的配置入口，后续可在此基础上接消息回调与机器人能力。', badge(feishuOk, '飞书运行中', '待接通'), '配置通道', 'navigate(&quot;settings&quot;);setTimeout(function(){switchSettingsTab(&quot;feishu&quot;)},80)', '<div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-sm" onclick="navigate(&quot;settings&quot;);setTimeout(function(){switchSettingsTab(&quot;wecom&quot;)},80)">企业微信</button><button class="btn btn-sm" onclick="navigate(&quot;settings&quot;);setTimeout(function(){switchSettingsTab(&quot;dingtalk&quot;)},80)">钉钉</button></div>') +
+        card('3. 搜索与工具', '配置搜索服务后，AI 对话可以抓取公开信息、整理政策线索和产业机会。开源版保留本地任务面板，便于观察自动化执行情况。', badge(searchOk, '搜索已配置', '建议配置'), '配置搜索', 'navigate(&quot;settings&quot;);setTimeout(function(){switchSettingsTab(&quot;search&quot;)},80)', '<button class="btn btn-sm" onclick="navigate(&quot;local-tasks&quot;)">查看本地任务</button>') +
+        card('4. 物理空间', '城市管理和物联网平台已经作为独立横向页面呈现。AI 对话负责入口，管理后台负责业务闭环，城市和 IoT 负责真实空间对象。', badge(true, '入口已开放', '入口已开放'), '进入物联网', 'navigate(&quot;iot-platform&quot;)', '<button class="btn btn-sm" onclick="navigate(&quot;cities&quot;)">城市管理</button>') +
+      '</div>' +
+    '</div>';
+}
+
 async function loadModelConfig() {
   var mc = document.getElementById('mc');
   if (!mc) return;
@@ -11436,7 +11507,7 @@ function renderSelfModelPanel(cfg) {
     '</div>' +
     '<p style="font-size:13px;color:var(--tx3);margin:0 0 20px;">使用您自己的 API Key 接入大模型，无额度限制，按各厂商计费</p>' +
     '<div style="display:grid;gap:16px;" id="self-ai-form">' +
-      '<div><label ' + LBL + '>模型提供商</label><select id="ai-provider" onchange="onProviderChange()" ' + INP + '><option value="">请选择...</option>' + AI_PROVIDERS.map(function(p) { return '<option value="' + p.id + '">' + p.name + '</option>'; }).join('') + '</select></div>' +
+      '<div><label ' + LBL + '>模型提供商</label><select id="ai-provider" onchange="onProviderChange()" ' + INP + '><option value="">请选择...</option>' + AI_PROVIDERS.map(function(p) { return '<option value="' + p.id + '">' + p.name + '</option>'; }).join('') + '</select><div id="ai-provider-links"></div></div>' +
       '<div><label ' + LBL + '>API Key</label><div style="position:relative;"><input id="ai-key" type="password" placeholder="输入 API Key" ' + INP + ' /><button onclick="toggleKeyVis()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--tx3);">👁</button></div></div>' +
       '<div><label ' + LBL + '>模型</label><div style="display:flex;gap:8px;"><select id="ai-model-select" onchange="onModelSelect()" ' + INP + '><option value="">选择或输入自定义</option></select><input id="ai-model" placeholder="或输入模型名称" ' + INP + ' /></div></div>' +
       '<div id="ai-baseurl-row"><label ' + LBL + '>API Base URL</label><input id="ai-baseurl" placeholder="https://api.example.com/v1" ' + INP + ' /></div>' +
@@ -11965,6 +12036,8 @@ function onProviderChange() {
   var prov = AI_PROVIDERS.find(function(p) { return p.id === (sel && sel.value); });
   var mSel = document.getElementById('ai-model-select');
   var urlInput = document.getElementById('ai-baseurl');
+  var linkBox = document.getElementById('ai-provider-links');
+  if (linkBox) linkBox.innerHTML = renderProviderLinks(prov);
   if (!mSel) return;
   mSel.innerHTML = '<option value="">选择模型或输入自定义</option>';
   if (prov) {
@@ -12046,7 +12119,7 @@ async function switchSettingsTab(tab) {
   if (tab === 'ai') {
     panel.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:15px;font-weight:600;margin:0;">AI 模型配置</h3>' + BADGE('ai-status') + '</div>' +
       '<div style="display:grid;gap:16px;">' +
-        '<div><label ' + LBL + '>模型提供商</label><select id="ai-provider" onchange="onProviderChange()" ' + INP + '><option value="">请选择...</option>' + AI_PROVIDERS.map(function(p) { return '<option value="' + p.id + '">' + p.name + '</option>'; }).join('') + '</select></div>' +
+        '<div><label ' + LBL + '>模型提供商</label><select id="ai-provider" onchange="onProviderChange()" ' + INP + '><option value="">请选择...</option>' + AI_PROVIDERS.map(function(p) { return '<option value="' + p.id + '">' + p.name + '</option>'; }).join('') + '</select><div id="ai-provider-links"></div></div>' +
         '<div><label ' + LBL + '>API Key</label><div style="position:relative;"><input id="ai-key" type="password" placeholder="输入 API Key" ' + INP + ' style="padding-right:36px;" /><button onclick="toggleKeyVis()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--tx3);">👁</button></div></div>' +
         '<div><label ' + LBL + '>模型</label><div style="display:flex;gap:8px;"><select id="ai-model-select" onchange="onModelSelect()" ' + INP + '><option value="">选择或输入自定义</option></select><input id="ai-model" placeholder="或输入模型名称" ' + INP + ' /></div></div>' +
         '<div><label ' + LBL + '>API Base URL</label><input id="ai-baseurl" placeholder="https://api.example.com/v1" ' + INP + ' /></div>' +
@@ -12221,21 +12294,28 @@ async function switchSettingsTab(tab) {
     if (_permJson) _permJson.textContent = JSON.stringify({"scopes":{"tenant":["im:message","im:message:send_as_bot","im:message.group_at_msg:readonly","im:message.group_msg","im:message.p2p_msg:readonly","im:message:readonly","im:resource","im:chat","im:chat:create","im:chat.access_event.bot_p2p_chat:read","im:chat.members:bot_access","contact:user.employee_id:readonly","contact:user.base:readonly","docx:document","docx:document:readonly","drive:drive","drive:drive:readonly","sheets:spreadsheet","sheets:spreadsheet:readonly","calendar:calendar","calendar:calendar:readonly","task:task","task:task:readonly","approval:approval","approval:approval:readonly"],"user":["im:chat.access_event.bot_p2p_chat:read"]}}, null, 2);
     loadFeishuStatus();
   } else if (tab === 'wecom') {
-    panel.innerHTML = '<div class="card" style="text-align:center;padding:60px 20px;">' +
-      '<div style="font-size:48px;margin-bottom:16px;opacity:0.5;">🏗️</div>' +
-      '<h3 style="font-size:18px;font-weight:600;margin:0 0 8px;">企业微信 — 即将适配</h3>' +
-      '<p style="color:var(--tx2);font-size:14px;margin:0 0 24px;line-height:1.6;">企业微信集成正在开发中，敬请期待下个版本更新。<br>届时你可以通过企业微信直接与 AI 助手对话。</p>' +
-      '<div style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--bg-soft);border-radius:8px;font-size:13px;color:var(--tx2);">' +
-        '<span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>开发中' +
-      '</div></div>';
+    panel.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><div><h3 style="font-size:15px;font-weight:600;margin:0 0 4px;">企业微信配置</h3><p style="font-size:12px;color:var(--tx3);margin:0;">先保存企业微信应用凭证，后续消息回调和机器人能力将复用这组配置</p></div>' + BADGE('wecom-status') + '</div>' +
+      '<div style="display:grid;gap:16px;">' +
+        '<div><label ' + LBL + '>CorpID</label><input id="cfg-wecom-corpid" placeholder="wwxxxxxxxxxxxxxxxx" ' + INP + ' /></div>' +
+        '<div><label ' + LBL + '>应用 Secret</label><input id="cfg-wecom-secret" type="password" placeholder="企业微信自建应用 Secret" ' + INP + ' /></div>' +
+        '<div><label ' + LBL + '>AgentID</label><input id="cfg-wecom-agent-id" placeholder="1000002" ' + INP + ' /></div>' +
+        '<div><label ' + LBL + '>群机器人 Webhook（可选）</label><input id="cfg-wecom-webhook" type="password" placeholder="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=..." ' + INP + ' /></div>' +
+        '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;"><a class="btn" href="https://developer.work.weixin.qq.com/" target="_blank" rel="noopener" style="font-size:12px;text-decoration:none;">企业微信开放平台</a><button class="btn btn-primary" onclick="saveServiceCfg(&quot;wecom&quot;)" style="font-size:12px;">保存配置</button></div>' +
+      '</div>' +
+      TIP('配置路径：企业微信管理后台 → 应用管理 → 自建应用，复制 CorpID、Secret 和 AgentID。Webhook 可用于群通知；正式消息回调需要在企业微信后台配置可信域名和回调地址。') +
+    '</div>';
+    loadServiceCfg('wecom', { wecom_corpid: 'cfg-wecom-corpid', wecom_agent_id: 'cfg-wecom-agent-id' }, { wecom_secret: 'cfg-wecom-secret', wecom_webhook: 'cfg-wecom-webhook' }, 'wecom-status');
   } else if (tab === 'dingtalk') {
-    panel.innerHTML = '<div class="card" style="text-align:center;padding:60px 20px;">' +
-      '<div style="font-size:48px;margin-bottom:16px;opacity:0.5;">🏗️</div>' +
-      '<h3 style="font-size:18px;font-weight:600;margin:0 0 8px;">钉钉 — 即将适配</h3>' +
-      '<p style="color:var(--tx2);font-size:14px;margin:0 0 24px;line-height:1.6;">钉钉集成正在开发中，敬请期待下个版本更新。<br>届时你可以通过钉钉直接与 AI 助手对话。</p>' +
-      '<div style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--bg-soft);border-radius:8px;font-size:13px;color:var(--tx2);">' +
-        '<span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>开发中' +
-      '</div></div>';
+    panel.innerHTML = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><div><h3 style="font-size:15px;font-weight:600;margin:0 0 4px;">钉钉配置</h3><p style="font-size:12px;color:var(--tx3);margin:0;">保存钉钉应用凭证和群机器人 Webhook，便于本地版快速接入组织通道</p></div>' + BADGE('dingtalk-status') + '</div>' +
+      '<div style="display:grid;gap:16px;">' +
+        '<div><label ' + LBL + '>AppKey / Client ID</label><input id="cfg-dingtalk-app-key" placeholder="dingxxxxxxxxxxxxxxxx" ' + INP + ' /></div>' +
+        '<div><label ' + LBL + '>AppSecret / Client Secret</label><input id="cfg-dingtalk-app-secret" type="password" placeholder="钉钉应用 AppSecret" ' + INP + ' /></div>' +
+        '<div><label ' + LBL + '>群机器人 Webhook（可选）</label><input id="cfg-dingtalk-webhook" type="password" placeholder="https://oapi.dingtalk.com/robot/send?access_token=..." ' + INP + ' /></div>' +
+        '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;"><a class="btn" href="https://open.dingtalk.com/" target="_blank" rel="noopener" style="font-size:12px;text-decoration:none;">钉钉开放平台</a><button class="btn btn-primary" onclick="saveServiceCfg(&quot;dingtalk&quot;)" style="font-size:12px;">保存配置</button></div>' +
+      '</div>' +
+      TIP('配置路径：钉钉开放平台 → 应用开发 → 企业内部应用，复制 AppKey 和 AppSecret。Webhook 可先用于群通知，正式机器人交互需要继续配置事件订阅和回调地址。') +
+    '</div>';
+    loadServiceCfg('dingtalk', { dingtalk_app_key: 'cfg-dingtalk-app-key' }, { dingtalk_app_secret: 'cfg-dingtalk-app-secret', dingtalk_webhook: 'cfg-dingtalk-webhook' }, 'dingtalk-status');
   }
 }
 
